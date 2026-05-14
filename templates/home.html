@@ -1,11 +1,38 @@
+{% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Inicio</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-    <h1>home</h1>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="{% url 'home' %}">Mi App</a>
+            <div class="navbar-nav ms-auto">
+                {% if user.is_authenticated %}
+                    <span class="nav-link text-light">{{ user.username }}</span>
+                    <a class="nav-link" href="{% url 'logout' %}">Cerrar Sesión</a>
+                {% else %}
+                    <a class="nav-link" href="{% url 'login' %}">Iniciar Sesión</a>
+                    <a class="nav-link" href="{% url 'register' %}">Registrarse</a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-5 text-center">
+        {% if user.is_authenticated %}
+            <h1>Bienvenido, {{ user.first_name|default:user.username }}!</h1>
+            <p class="lead">Has iniciado sesión correctamente.</p>
+        {% else %}
+            <h1>Bienvenido a Mi App</h1>
+            <p class="lead">Por favor, inicia sesión o regístrate.</p>
+            <a href="{% url 'login' %}" class="btn btn-primary me-2">Iniciar Sesión</a>
+            <a href="{% url 'register' %}" class="btn btn-secondary">Registrarse</a>
+        {% endif %}
+    </div>
 </body>
 </html>
